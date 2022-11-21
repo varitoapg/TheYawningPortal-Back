@@ -8,7 +8,8 @@
     "build": "tsc",
     "build:dev": "tsc -w",
     "start": "node .",
-    "start:dev": "node --watch ."
+    "start:dev": "node --watch .",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-xo": "^0.42.0",
     "eslint-config-xo-typescript": "^0.53.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "husky": "^8.0.0"
   }
 }
