@@ -3,7 +3,7 @@ import environment from "../loadEnvironment.js";
 
 const { mongoDbDebug } = environment;
 
-const connectDb = async (mongoUrl: string, mongoDbName?: string) => {
+const connectDatabase = async (mongoUrl: string, mongoDbName?: string) => {
   await mongoose.connect(mongoUrl, { dbName: mongoDbName });
 
   mongoose.set("debug", mongoDbDebug === "true");
@@ -20,4 +20,4 @@ const connectDb = async (mongoUrl: string, mongoDbName?: string) => {
   });
 };
 
-export default connectDb;
+export default connectDatabase;
