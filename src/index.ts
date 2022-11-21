@@ -1,8 +1,8 @@
 import environment from "./loadEnvironment.js";
 import debugCreator from "debug";
 import chalk from "chalk";
-import app from "./server/app.js";
 import startServer from "./server/startServer.js";
+import app from "./server/app.js";
 
 const { port } = environment;
 const debug = debugCreator("characters:root");
