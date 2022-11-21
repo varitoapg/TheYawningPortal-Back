@@ -7,6 +7,7 @@ const {
   SECRET_JWT: secretJwt,
   MONGODB_URL: mongoDatabaseUrl,
   MONGODB_DEBUG: mongoDbDebug,
+  DBNAME: databaseName,
   SALT: salt,
   DEBUG: debug,
 } = process.env;
@@ -18,6 +19,7 @@ interface Environment {
   mongoDbDebug: string;
   salt: number;
   debugEnvironment: string;
+  databaseName: string;
 }
 
 const environment: Environment = {
@@ -27,6 +29,7 @@ const environment: Environment = {
   mongoDatabaseUrl,
   mongoDbDebug,
   debugEnvironment: debug,
+  databaseName,
 };
 
 export default environment;
