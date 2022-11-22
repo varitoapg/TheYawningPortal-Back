@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
 export const characterSchema = new Schema({
   name: {
@@ -23,29 +23,31 @@ export const characterSchema = new Schema({
     type: Number,
     required: true,
   },
-  strength: {
-    type: Number,
-    required: true,
-  },
-  dexterity: {
-    type: Number,
-    required: true,
-  },
-  constitution: {
-    type: Number,
-    required: true,
-  },
-  intelligence: {
-    type: Number,
-    required: true,
-  },
-  wisdom: {
-    type: Number,
-    required: true,
-  },
-  charisma: {
-    type: Number,
-    required: true,
+  stats: {
+    strength: {
+      type: Number,
+      required: true,
+    },
+    dexterity: {
+      type: Number,
+      required: true,
+    },
+    constitution: {
+      type: Number,
+      required: true,
+    },
+    intelligence: {
+      type: Number,
+      required: true,
+    },
+    wisdom: {
+      type: Number,
+      required: true,
+    },
+    charisma: {
+      type: Number,
+      required: true,
+    },
   },
   background: {
     type: String,
@@ -54,6 +56,15 @@ export const characterSchema = new Schema({
   details: {
     type: String,
     required: true,
+  },
+  isAlive: {
+    type: Boolean,
+    required: true,
+  },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
 });
 
