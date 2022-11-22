@@ -3,7 +3,10 @@ import cors from "cors";
 import morgan from "morgan";
 import corsOptions from "./corsOptions.js";
 import { unknownEndpoint } from "./middleware/errors/errors.js";
+import routes from "./routers/routes/routes.js";
+import { userRegister } from "./controllers/userControllers/userControllers.js";
 
+const { usersRoute } = routes;
 const app = express();
 
 app.use(cors(corsOptions));
@@ -18,6 +21,8 @@ app.get("/", (req, res, next) => {
 
   next();
 });
+
+app.use(usersRoute, userRegister);
 
 app.use(unknownEndpoint);
 
