@@ -19,11 +19,11 @@ export const characterSchema = new Schema({
   imageBackup: {
     type: String,
   },
-  speed: {
-    type: Number,
-    required: true,
-  },
   stats: {
+    speed: {
+      type: Number,
+      required: true,
+    },
     strength: {
       type: Number,
       required: true,
