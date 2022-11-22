@@ -18,6 +18,7 @@ export const userSchema = new Schema({
   characters: {
     type: [Schema.Types.ObjectId],
     default: [],
+    ref: "Character",
   },
 });
 
