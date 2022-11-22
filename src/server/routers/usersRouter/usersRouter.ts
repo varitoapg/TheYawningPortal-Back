@@ -1,7 +1,7 @@
 import express from "express";
 import { validate } from "express-validation";
-import registerUserSchema from "../../../schemas/registerUserSchema";
-import { userRegister } from "../../controllers/userControllers/userControllers";
+import registerUserSchema from "../../../schemas/registerUserSchema.js";
+import { userRegister } from "../../controllers/userControllers/userControllers.js";
 import routes from "../routes/routes.js";
 
 const { registerRoute } = routes;
@@ -14,3 +14,5 @@ usersRouter.post(
   validate(registerUserSchema, {}, { abortEarly: false }),
   userRegister
 );
+
+export default usersRouter;
