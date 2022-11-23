@@ -1,10 +1,12 @@
 import bcrypt from "bcryptjs";
 import type { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 import CustomError from "../../../CustomError/CustomError";
 import User from "../../../database/models/User/User";
 import type { UserRegisterCredentials } from "./types";
-import { userRegister } from "./userControllers";
+import { loginUser, userRegister } from "./userControllers";
+import { loginError } from "../../../CustomError/types";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -27,74 +29,158 @@ const res: Partial<Response> = {
 
 const next = jest.fn();
 
-describe("Given the controller userRegister", () => {
-  describe("When it receives a request with username 'userTest', a password 'password' and an email 'test@test.com'", () => {
-    test("Then the response's method status should be called with a 201 and its json's method with the details of the user", async () => {
-      req.body = testUser;
-      const testHashedPassword = "hashedPassword";
-      const id = new mongoose.Types.ObjectId();
-      const expectedStatus = 201;
-      const expectedDetails = {
-        id: id.toString(),
-        username: testUser.username,
-        email: testUser.email,
-      };
+const token = jwt.sign({}, "test");
 
-      bcrypt.hash = jest.fn().mockResolvedValue(testHashedPassword);
+describe("Given the userControllers controller", () => {
+  describe("And it invokes userLogin controller", () => {
+    describe("When it receives a request with in the body username 'AdminAdmin' and password 'password' and a response", () => {
+      test("Then it should call response's status method with a 200 and json with a token", async () => {
+        const user = {
+          username: "AdminAdmin",
+          password: "wrong",
+          _id: new mongoose.Types.ObjectId(),
+        };
+        const expectedStatus = 200;
+        req.body = user;
 
-      User.create = jest
-        .fn()
-        .mockResolvedValue({ ...testUser, _id: id.toString() });
+        User.findOne = jest.fn().mockResolvedValueOnce(user);
+        bcrypt.compare = jest.fn().mockResolvedValueOnce(true);
+        jwt.sign = jest.fn().mockReturnValueOnce(token);
 
-      await userRegister(req as Request, res as Response, next as NextFunction);
+        await loginUser(req as Request, res as Response, next as NextFunction);
 
-      expect(res.status).toHaveBeenCalledWith(expectedStatus);
-      expect(res.json).toHaveBeenCalledWith(expectedDetails);
+        expect(res.status).toHaveBeenCalledWith(expectedStatus);
+        expect(res.json).toHaveBeenCalledWith({ token });
+      });
+    });
+
+    describe("When it receives a request with in the body username 'admin' and password 'password' and a next function", () => {
+      test("Then it should call next with a CustomError with publicMessage 'Incorrect credentials'", async () => {
+        testUser.username = "admin";
+        req.body = testUser;
+
+        User.findOne = jest.fn().mockResolvedValueOnce(null);
+        await loginUser(req as Request, res as Response, next as NextFunction);
+
+        expect(next).toHaveBeenCalledWith(loginError.userNotFound);
+      });
+    });
+
+    describe("When it receives a request with in the body username 'AdminAdmin' and password 'wrong' and a next function", () => {
+      test("Then it should call next with a CustomError with publicMessage 'Incorrect credentials'", async () => {
+        testUser.password = "wrong";
+        req.body = testUser;
+
+        User.findOne = jest.fn().mockResolvedValueOnce(testUser);
+        bcrypt.compare = jest.fn().mockResolvedValueOnce(false);
+
+        await loginUser(req as Request, null, next as NextFunction);
+        expect(next).toHaveBeenCalledWith(loginError.incorrectPassword);
+      });
+    });
+
+    describe("When it receives a request, response and next function and password comparing fails", () => {
+      test("Then next should be called with a general error", async () => {
+        const error = new Error();
+        const userId = new mongoose.Types.ObjectId();
+        req.body = testUser;
+
+        User.findOne = jest
+          .fn()
+          .mockResolvedValueOnce({ ...testUser, _id: userId });
+        bcrypt.compare = jest.fn().mockRejectedValueOnce(error);
+
+        await loginUser(req as Request, res as Response, next as NextFunction);
+        expect(next).toHaveBeenCalledWith(error);
+      });
     });
   });
 
-  describe("When it receives an username that already exists", () => {
-    test("Then it should call response's method status with a 409 and a message 'This username already exists' ", async () => {
-      const customError = new CustomError(
-        "username",
-        "This username already exists",
-        409
-      );
+  describe("And invokes controller userRegister", () => {
+    describe("When it receives a request with username 'userTest', a password 'password' and an email 'test@test.com'", () => {
+      test("Then the response's method status should be called with a 201 and its json's method with the details of the user", async () => {
+        req.body = testUser;
+        const testHashedPassword = "hashedPassword";
+        const id = new mongoose.Types.ObjectId();
+        const expectedStatus = 201;
+        const expectedDetails = {
+          id: id.toString(),
+          username: testUser.username,
+          email: testUser.email,
+        };
 
-      bcrypt.hash = jest.fn().mockResolvedValue(testUser.password);
-      User.create = jest.fn().mockRejectedValue(new Error("username"));
+        bcrypt.hash = jest.fn().mockResolvedValue(testHashedPassword);
 
-      await userRegister(req as Request, res as Response, next as NextFunction);
+        User.create = jest
+          .fn()
+          .mockResolvedValue({ ...testUser, _id: id.toString() });
 
-      expect(next).toHaveBeenCalledWith(customError);
+        await userRegister(
+          req as Request,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(res.status).toHaveBeenCalledWith(expectedStatus);
+        expect(res.json).toHaveBeenCalledWith(expectedDetails);
+      });
     });
-  });
 
-  describe("When it receives an email that already exists", () => {
-    test("Then it should call response's method status with a 409 and a message 'This username already exists' ", async () => {
-      const customError = new CustomError(
-        "email",
-        "This email already exists",
-        409
-      );
+    describe("When it receives an username that already exists", () => {
+      test("Then it should call response's method status with a 409 and a message 'This username already exists' ", async () => {
+        const customError = new CustomError(
+          "username",
+          "This username already exists",
+          409
+        );
 
-      User.create = jest.fn().mockRejectedValueOnce(new Error("email"));
+        bcrypt.hash = jest.fn().mockResolvedValue(testUser.password);
+        User.create = jest.fn().mockRejectedValue(new Error("username"));
 
-      await userRegister(req as Request, res as Response, next as NextFunction);
+        await userRegister(
+          req as Request,
+          res as Response,
+          next as NextFunction
+        );
 
-      expect(next).toHaveBeenCalledWith(customError);
+        expect(next).toHaveBeenCalledWith(customError);
+      });
     });
-  });
 
-  describe("When it receives an error", () => {
-    test("Then it should call response's method status with a 500 and a message 'Fatal error' ", async () => {
-      const customError = new CustomError("", "Fatal error", 500);
+    describe("When it receives an email that already exists", () => {
+      test("Then it should call response's method status with a 409 and a message 'This username already exists' ", async () => {
+        const customError = new CustomError(
+          "email",
+          "This email already exists",
+          409
+        );
 
-      User.create = jest.fn().mockRejectedValueOnce(new Error());
+        User.create = jest.fn().mockRejectedValueOnce(new Error("email"));
 
-      await userRegister(req as Request, res as Response, next as NextFunction);
+        await userRegister(
+          req as Request,
+          res as Response,
+          next as NextFunction
+        );
 
-      expect(next).toHaveBeenCalledWith(customError);
+        expect(next).toHaveBeenCalledWith(customError);
+      });
+    });
+
+    describe("When it receives an error", () => {
+      test("Then it should call response's method status with a 500 and a message 'Fatal error' ", async () => {
+        const customError = new CustomError("", "Fatal error", 500);
+
+        User.create = jest.fn().mockRejectedValueOnce(new Error());
+
+        await userRegister(
+          req as Request,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(customError);
+      });
     });
   });
 });

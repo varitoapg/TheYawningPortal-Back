@@ -1,11 +1,17 @@
 import type { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import environment from "../../../loadEnvironment.js";
 import User from "../../../database/models/User/User.js";
-import type { UserRegisterCredentials } from "./types.js";
+import type {
+  LoginUser,
+  UserRegisterCredentials,
+  UserTokenPayload,
+} from "./types.js";
 import CustomError from "../../../CustomError/CustomError.js";
+import { loginError } from "../../../CustomError/types.js";
 
-const { salt } = environment;
+const { salt, secretJwt } = environment;
 
 export const userRegister = async (
   req: Request<
@@ -61,5 +67,39 @@ export const userRegister = async (
     );
 
     next(customError);
+  }
+};
+
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { username, password } = req.body as LoginUser;
+  try {
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      next(loginError.userNotFound);
+      return;
+    }
+
+    if (!(await bcrypt.compare(password, user.password))) {
+      next(loginError.incorrectPassword);
+      return;
+    }
+
+    const tokenPayload: UserTokenPayload = {
+      username,
+      id: user._id.toString(),
+    };
+
+    const token = jwt.sign(tokenPayload, secretJwt, {
+      expiresIn: "2d",
+    });
+
+    res.status(200).json({ token });
+  } catch (error: unknown) {
+    next(error);
   }
 };
