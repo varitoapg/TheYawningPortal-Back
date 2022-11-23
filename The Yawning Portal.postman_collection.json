@@ -13,7 +13,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\",\r\n    \"email\": \"\"\r\n}",
+          "raw": "{\r\n    \"username\": \"12334f2342\",\r\n    \"password\": \"2234f234233\",\r\n    \"email\": \"adm22f32in@test.com\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -21,9 +21,31 @@
           }
         },
         "url": {
-          "raw": "{{localhost}}/users/register",
-          "host": ["{{localhost}}"],
+          "raw": "{{theYawningPortal}}/users/register",
+          "host": ["{{theYawningPortal}}"],
           "path": ["users", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[POST]/users/login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{theYawningPortal}}/users/login",
+          "host": ["{{theYawningPortal}}"],
+          "path": ["users", "login"]
         }
       },
       "response": []
@@ -47,8 +69,8 @@
   ],
   "variable": [
     {
-      "key": "localhost",
-      "value": "http://localhost:4000",
+      "key": "theYawningPortal",
+      "value": "https://alvaro-parada-final-project-202209.onrender.com",
       "type": "string"
     }
   ]
