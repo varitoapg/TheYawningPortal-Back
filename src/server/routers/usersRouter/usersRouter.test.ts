@@ -1,23 +1,31 @@
+import bcrypt from "bcryptjs";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import request from "supertest";
 import connectDatabase from "../../../database/connectDatabase.js";
 import User from "../../../database/models/User/User.js";
 import { getRandomUserRegister } from "../../../factories/usersFactory.js";
+import environment from "../../../loadEnvironment.js";
 import app from "../../app.js";
-import type { UserRegisterCredentials } from "../../controllers/userControllers/types.js";
+import type {
+  LoginUser,
+  UserRegisterCredentials,
+} from "../../controllers/userControllers/types.js";
 import routes from "../routes/routes.js";
 
 let server: MongoMemoryServer;
 const registerData: UserRegisterCredentials = getRandomUserRegister();
-const { registerRoute, usersRoute } = routes;
+const notHashedPassword = registerData.password;
+const { salt } = environment;
+const { registerRoute, usersRoute, loginRoute } = routes;
 
 beforeAll(async () => {
   server = await MongoMemoryServer.create();
 
   await connectDatabase(server.getUri());
 
-  await User.create(registerData);
+  const hashedPassword = await bcrypt.hash(registerData.password, salt);
+  await User.create({ ...registerData, password: hashedPassword });
 });
 
 afterAll(async () => {
@@ -101,6 +109,83 @@ describe("Given a POST /users/register endpoint", () => {
 
       await request(app)
         .post(`${usersRoute}${registerRoute}`)
+        .expect(expectedStatus);
+    });
+  });
+});
+
+describe("Given a POST /users/login endpoint", () => {
+  describe(`When it receives a request with username ${registerData.username} and password ${notHashedPassword}`, () => {
+    test("Then it should return a response with 200 status", async () => {
+      const loginData: LoginUser = {
+        username: registerData.username,
+        password: registerData.password,
+      };
+      const expectedStatus = 200;
+
+      await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(loginData)
+        .expect(expectedStatus);
+    });
+  });
+
+  describe(`Whet it receives a request with username ${registerData.username} and wrong password 'password'`, () => {
+    test("Then it should return a response with 401 status", async () => {
+      const loginData: LoginUser = {
+        username: registerData.username,
+        password: "password",
+      };
+      const expectedStatus = 401;
+
+      await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(loginData)
+        .expect(expectedStatus);
+    });
+  });
+
+  describe(`When it receives a request with wrong username 'notAdmin' and a correct password '${notHashedPassword}'`, () => {
+    test("Then it should return a response with 401 status", async () => {
+      const loginData: LoginUser = {
+        username: "notAdmin",
+        password: registerData.password,
+      };
+      const expectedStatus = 401;
+
+      await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(loginData)
+        .expect(expectedStatus);
+    });
+  });
+
+  describe(`When it receives a request with short username 'bad' and a correct password '${notHashedPassword}'`, () => {
+    test("Then it should return a response with 400 status", async () => {
+      const loginData: LoginUser = {
+        username: "bad",
+        password: registerData.password,
+      };
+      const expectedStatus = 400;
+
+      await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(loginData)
+        .expect(expectedStatus);
+    });
+  });
+
+  describe(`When it receives a request with an username '${registerData.username}' and a short password 'bad'`, () => {
+    test("Then it should return a response with 400 status", async () => {
+      const loginData: LoginUser = {
+        username: registerData.username,
+        password: "bad",
+      };
+      const expectedStatus = 400;
+
+      await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(loginData)
         .expect(expectedStatus);
     });
   });
