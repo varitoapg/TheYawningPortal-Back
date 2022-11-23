@@ -1,55 +1,91 @@
 {
-  "info": {
-    "_postman_id": "3d6de6bb-5de6-471f-b5a9-9fa55d36570d",
-    "name": "The Yawning Portal",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "23871586"
-  },
-  "item": [
-    {
-      "name": "[POST]/users/register",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\",\r\n    \"email\": \"\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{localhost}}/users/register",
-          "host": ["{{localhost}}"],
-          "path": ["users", "register"]
-        }
-      },
-      "response": []
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "localhost",
-      "value": "http://localhost:4000",
-      "type": "string"
-    }
-  ]
+	"info": {
+		"_postman_id": "3d6de6bb-5de6-471f-b5a9-9fa55d36570d",
+		"name": "The Yawning Portal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23871586"
+	},
+	"item": [
+		{
+			"name": "[POST]/users/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"12334f2342\",\r\n    \"password\": \"2234f234233\",\r\n    \"email\": \"adm22f32in@test.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{theYawningPortal}}/users/register",
+					"host": [
+						"{{theYawningPortal}}"
+					],
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[POST]/users/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{theYawningPortal}}/users/login",
+					"host": [
+						"{{theYawningPortal}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "theYawningPortal",
+			"value": "https://alvaro-parada-final-project-202209.onrender.com",
+			"type": "string"
+		}
+	]
 }
