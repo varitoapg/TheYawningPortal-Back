@@ -16,7 +16,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.get("/", (req, res, next) => {
-  res.json({
+  res.status(200).json({
     message: "Pong",
   });
 
