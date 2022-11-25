@@ -190,3 +190,11 @@ describe("Given a POST /users/login endpoint", () => {
     });
   });
 });
+
+describe("Given a GET / endpoint", () => {
+  describe("When it receives a request", () => {
+    test("Then it should return a response with message: 'Pong' and status method with 200", async () => {
+      await request(app).get("/").expect({ message: "Pong" }).expect(200);
+    });
+  });
+});
