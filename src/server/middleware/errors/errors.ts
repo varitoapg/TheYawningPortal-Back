@@ -23,7 +23,7 @@ export const generalError = (
       (schemError) => schemError.message
     );
     error.message = schemErrors.join(", ");
-    error.publicMessage = schemErrors.join(`\n`);
+    error.publicMessage = schemErrors.join(`\n\n`);
   }
 
   const publicMessage = error.publicMessage || "Fatal error";
