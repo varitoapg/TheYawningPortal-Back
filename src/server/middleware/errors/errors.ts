@@ -3,6 +3,7 @@ import chalk from "chalk";
 import debugCreator from "debug";
 import type { NextFunction, Request, Response } from "express";
 import type CustomError from "../../../CustomError/CustomError.js";
+import { ValidationError } from "express-validation";
 
 const debug = debugCreator("characters:server:middleware:errors");
 
@@ -17,6 +18,14 @@ export const generalError = (
   // eslint-disable-next-line no-unused-vars
   next: NextFunction
 ) => {
+  if (error instanceof ValidationError) {
+    const schemErrors = error.details.body.map(
+      (schemError) => schemError.message
+    );
+    error.message = schemErrors.join(", ");
+    error.publicMessage = schemErrors.join(`\n`);
+  }
+
   const publicMessage = error.publicMessage || "Fatal error";
   const status = error.statusCode ?? 500;
 
