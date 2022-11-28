@@ -159,36 +159,6 @@ describe("Given a POST /users/login endpoint", () => {
         .expect(expectedStatus);
     });
   });
-
-  describe(`When it receives a request with short username 'bad' and a correct password '${notHashedPassword}'`, () => {
-    test("Then it should return a response with 400 status", async () => {
-      const loginData: LoginUser = {
-        username: "bad",
-        password: registerData.password,
-      };
-      const expectedStatus = 400;
-
-      await request(app)
-        .post(`${usersRoute}${loginRoute}`)
-        .send(loginData)
-        .expect(expectedStatus);
-    });
-  });
-
-  describe(`When it receives a request with an username '${registerData.username}' and a short password 'bad'`, () => {
-    test("Then it should return a response with 400 status", async () => {
-      const loginData: LoginUser = {
-        username: registerData.username,
-        password: "bad",
-      };
-      const expectedStatus = 400;
-
-      await request(app)
-        .post(`${usersRoute}${loginRoute}`)
-        .send(loginData)
-        .expect(expectedStatus);
-    });
-  });
 });
 
 describe("Given a GET / endpoint", () => {
