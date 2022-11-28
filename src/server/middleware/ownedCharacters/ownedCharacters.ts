@@ -1,7 +1,7 @@
 import type { NextFunction, Response } from "express";
-import CustomError from "../../../CustomError/CustomError";
-import User from "../../../database/models/User/User";
-import type { CustomRequest } from "../auth/types";
+import CustomError from "../../../CustomError/CustomError.js";
+import User from "../../../database/models/User/User.js";
+import type { CustomRequest } from "../auth/types.js";
 
 const ownedCharacters = async (
   req: CustomRequest,
