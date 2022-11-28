@@ -1,9 +1,9 @@
 import type { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import CustomError from "../../../CustomError/CustomError";
-import environment from "../../../loadEnvironment";
-import type { UserTokenPayload } from "../../controllers/userControllers/types";
-import type { CustomRequest } from "./types";
+import CustomError from "../../../CustomError/CustomError.js";
+import environment from "../../../loadEnvironment.js";
+import type { UserTokenPayload } from "../../controllers/userControllers/types.js";
+import type { CustomRequest } from "./types.js";
 
 const { secretJwt } = environment;
 

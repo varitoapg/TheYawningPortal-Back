@@ -11,13 +11,13 @@ import type {
   LoginUser,
   UserRegisterCredentials,
 } from "../../controllers/userControllers/types.js";
-import routes from "../routes/routes.js";
+import userRoutes from "../routes/userRoutes.js";
 
 let server: MongoMemoryServer;
 const registerData: UserRegisterCredentials = getRandomUserRegister();
 const notHashedPassword = registerData.password;
 const { salt } = environment;
-const { registerRoute, usersRoute, loginRoute } = routes;
+const { registerRoute, usersRoute, loginRoute } = userRoutes;
 
 beforeAll(async () => {
   server = await MongoMemoryServer.create();

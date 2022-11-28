@@ -5,9 +5,9 @@ import {
   loginUser,
   userRegister,
 } from "../../controllers/userControllers/userControllers.js";
-import routes from "../routes/routes.js";
+import userRoutes from "../routes/userRoutes.js";
 
-const { registerRoute, loginRoute } = routes;
+const { registerRoute, loginRoute } = userRoutes;
 
 // eslint-disable-next-line new-cap
 const usersRouter = express.Router();

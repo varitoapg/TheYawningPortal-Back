@@ -1,7 +1,7 @@
-const routes = {
+const userRoutes = {
   registerRoute: "/register",
   usersRoute: "/users",
   loginRoute: "/login",
 };
 
-export default routes;
+export default userRoutes;
