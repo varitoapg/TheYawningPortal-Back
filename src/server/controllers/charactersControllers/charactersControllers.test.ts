@@ -46,28 +46,6 @@ describe("Given the charactersController controller", () => {
       });
     });
 
-    describe("When it receives a request without ObjectsId", () => {
-      test("Then it should return a custom error with status 404 and public message 'Sorry, but you still not have any character'", async () => {
-        req = {
-          characters: [],
-        };
-
-        const expectedError = new CustomError(
-          "No characters",
-          "Sorry, but you still not have any character",
-          404
-        );
-
-        await getAllCharacters(
-          req as CustomRequest,
-          res as Response,
-          next as NextFunction
-        );
-
-        expect(next).toHaveBeenCalledWith(expectedError);
-      });
-    });
-
     describe("When it receives a request and finding characters throws an error", () => {
       test("Then next should be called with a general error", async () => {
         const error = new Error();

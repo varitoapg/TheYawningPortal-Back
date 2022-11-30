@@ -91,21 +91,4 @@ describe("Given the endpoint [GET]/characters", () => {
         .expect(401);
     });
   });
-
-  describe("When it receives a request with a correct token and a empty list of characters to find", () => {
-    test("Then it should return response's method status with 404", async () => {
-      const response = await request(app)
-        .get(`${charactersRoute}`)
-        .set({
-          Authorization: `Bearer ${tokeWithoutCharacters}`,
-          characters: [],
-        })
-        .expect(404);
-
-      expect(response.body).toHaveProperty(
-        "error",
-        "Sorry, but you still not have any character"
-      );
-    });
-  });
 });

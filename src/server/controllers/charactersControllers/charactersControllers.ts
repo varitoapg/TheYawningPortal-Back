@@ -10,15 +10,6 @@ export const getAllCharacters = async (
 ) => {
   const { characters } = req;
   try {
-    if (characters.length === 0) {
-      const error = new CustomError(
-        "No characters",
-        "Sorry, but you still not have any character",
-        404
-      );
-      next(error);
-    }
-
     const allCharacters = await Character.find({
       _id: { $in: characters },
     });
