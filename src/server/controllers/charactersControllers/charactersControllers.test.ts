@@ -1,5 +1,4 @@
 import type { NextFunction, Response } from "express";
-import CustomError from "../../../CustomError/CustomError";
 import Character from "../../../database/models/Character/Character";
 import {
   getRandomCharacter,
@@ -43,28 +42,6 @@ describe("Given the charactersController controller", () => {
         expect(res.json).toHaveBeenCalledWith({
           allCharacters: [listOfCharacters[0], listOfCharacters[1]],
         });
-      });
-    });
-
-    describe("When it receives a request without ObjectsId", () => {
-      test("Then it should return a custom error with status 404 and public message 'Sorry, but you still not have any character'", async () => {
-        req = {
-          characters: [],
-        };
-
-        const expectedError = new CustomError(
-          "No characters",
-          "Sorry, but you still not have any character",
-          404
-        );
-
-        await getAllCharacters(
-          req as CustomRequest,
-          res as Response,
-          next as NextFunction
-        );
-
-        expect(next).toHaveBeenCalledWith(expectedError);
       });
     });
 
