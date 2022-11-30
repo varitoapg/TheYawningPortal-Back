@@ -1,5 +1,4 @@
 import type { NextFunction, Response } from "express";
-import CustomError from "../../../CustomError/CustomError";
 import Character from "../../../database/models/Character/Character";
 import {
   getRandomCharacter,

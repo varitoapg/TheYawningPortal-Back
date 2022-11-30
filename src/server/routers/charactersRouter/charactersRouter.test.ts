@@ -38,17 +38,6 @@ const token = jwt.sign(
   }
 );
 
-const tokeWithoutCharacters = jwt.sign(
-  {
-    username: userWithoutCharacters.username,
-    id: userWithoutCharacters._id.toString(),
-  } as UserTokenPayload,
-  secretJwt,
-  {
-    expiresIn: "2d",
-  }
-);
-
 beforeAll(async () => {
   server = await MongoMemoryServer.create();
 

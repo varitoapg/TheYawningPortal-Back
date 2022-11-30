@@ -1,5 +1,4 @@
 import type { NextFunction, Response } from "express";
-import CustomError from "../../../CustomError/CustomError.js";
 import Character from "../../../database/models/Character/Character.js";
 import type { CustomRequest } from "../../middleware/auth/types.js";
 
