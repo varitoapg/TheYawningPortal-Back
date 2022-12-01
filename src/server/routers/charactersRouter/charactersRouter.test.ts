@@ -12,10 +12,11 @@ import app from "../../app";
 import charactersRoutes from "../routes/characterRoutes";
 import { getRandomCharacterList } from "../../../factories/characterFactory";
 import User from "../../../database/models/User/User";
+import Character from "../../../database/models/Character/Character";
 
 const { secretJwt } = environment;
 
-const { charactersRoute } = charactersRoutes;
+const { charactersRoute, deleteCharacterRoute } = charactersRoutes;
 
 const charactersList = getRandomCharacterList(3);
 const user = {
@@ -38,6 +39,17 @@ const token = jwt.sign(
   }
 );
 
+const tokenWithoutCharacters = jwt.sign(
+  {
+    username: userWithoutCharacters.username,
+    id: userWithoutCharacters._id.toString(),
+  } as UserTokenPayload,
+  secretJwt,
+  {
+    expiresIn: "2d",
+  }
+);
+
 beforeAll(async () => {
   server = await MongoMemoryServer.create();
 
@@ -45,6 +57,8 @@ beforeAll(async () => {
 
   await User.create(user);
   await User.create(userWithoutCharacters);
+
+  await Character.create(charactersList[0]);
 });
 
 afterAll(async () => {
@@ -78,6 +92,33 @@ describe("Given the endpoint [GET]/characters", () => {
           characters: [charactersList[1]._id, charactersList[0]._id],
         })
         .expect(401);
+    });
+  });
+});
+
+describe("Given the endpoint [DELETE]/characters/delete/:idCharacter", () => {
+  describe("When it receives a request with a correct token and a correct idCharacter", () => {
+    test("Then it should return a status 200", async () => {
+      const expectedReturnMessage = "Character deleted!";
+      const response = await request(app)
+        .delete(
+          `${charactersRoute}${deleteCharacterRoute}/${charactersList[0]._id.toString()}`
+        )
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200);
+
+      expect(response.body).toHaveProperty("text", expectedReturnMessage);
+    });
+  });
+
+  describe("When it receives a request with a correct token of a user without the character", () => {
+    test("Then it should return a status 404", async () => {
+      await request(app)
+        .delete(
+          `${charactersRoute}${deleteCharacterRoute}/${charactersList[0]._id.toString()}`
+        )
+        .set("Authorization", `Bearer ${tokenWithoutCharacters}`)
+        .expect(404);
     });
   });
 });
