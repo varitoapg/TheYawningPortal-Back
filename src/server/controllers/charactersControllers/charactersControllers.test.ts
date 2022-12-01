@@ -1,16 +1,26 @@
 import type { NextFunction, Response } from "express";
+import mongoose from "mongoose";
+import CustomError from "../../../CustomError/CustomError";
 import Character from "../../../database/models/Character/Character";
+import User from "../../../database/models/User/User";
 import {
   getRandomCharacter,
   getRandomCharacterList,
 } from "../../../factories/characterFactory";
+import { getRandomUserWithId } from "../../../factories/usersFactory";
 import type { CustomRequest } from "../../middleware/auth/types";
-import { getAllCharacters } from "./charactersControllers";
+import type { UserWithId } from "../userControllers/types";
+import { deleteCharacter, getAllCharacters } from "./charactersControllers";
 
 const listOfCharacters = getRandomCharacterList(4);
 
+const idToFind = new mongoose.Types.ObjectId();
+const user = getRandomUserWithId();
+user.characters = [...user.characters, idToFind];
+
 let req: Partial<CustomRequest> = {
   characters: [],
+  params: {},
 };
 
 const res: Partial<Response> = {
@@ -63,6 +73,70 @@ describe("Given the charactersController controller", () => {
         );
 
         expect(next).toHaveBeenCalledWith(error);
+      });
+    });
+  });
+
+  describe("And it invokes deleteCharacter controller", () => {
+    describe("When it receives a request with an userId and characterId by params", () => {
+      test("Then it should call response's method status with 200 and json with Character deleted!", async () => {
+        req.params = { idCharacter: idToFind.toString() };
+
+        User.findById = jest.fn().mockResolvedValueOnce(user);
+
+        Character.findByIdAndDelete = jest
+          .fn()
+          .mockResolvedValueOnce({ text: "Character deleted!" });
+
+        User.findByIdAndUpdate = jest.fn();
+
+        await deleteCharacter(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({ text: "Character deleted!" });
+      });
+    });
+
+    describe("When it receives a request with an userId and characterId that is not int user's characters", () => {
+      test("Then it should call next with a CustomError with status 404", async () => {
+        const notFoundError = new CustomError(
+          "Cannot find the character in this user",
+          "Sorry, we cannot find this character",
+          404
+        );
+        user.characters = [];
+        req.params = { idCharacter: idToFind.toString() };
+
+        User.findById = jest.fn().mockResolvedValueOnce(user);
+
+        await deleteCharacter(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(notFoundError);
+      });
+    });
+
+    describe("When it receives a request with an userId and rejects an error", () => {
+      test("Then it should call next with a CustomError with message 'Sorry, try again later'", async () => {
+        const fatalError = new CustomError("", "Sorry, try again later", 500);
+        req.params = { idCharacter: idToFind.toString() };
+
+        User.findById = jest.fn().mockRejectedValueOnce(fatalError);
+
+        await deleteCharacter(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(fatalError);
       });
     });
   });
