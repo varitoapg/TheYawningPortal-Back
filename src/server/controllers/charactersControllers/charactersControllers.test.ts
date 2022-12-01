@@ -9,7 +9,6 @@ import {
 } from "../../../factories/characterFactory";
 import { getRandomUserWithId } from "../../../factories/usersFactory";
 import type { CustomRequest } from "../../middleware/auth/types";
-import type { UserWithId } from "../userControllers/types";
 import { deleteCharacter, getAllCharacters } from "./charactersControllers";
 
 const listOfCharacters = getRandomCharacterList(4);
