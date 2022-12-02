@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import {
+  createCharacter,
   deleteCharacter,
   getAllCharacters,
 } from "../../controllers/charactersControllers/charactersControllers.js";
@@ -36,7 +37,8 @@ characersRouter.post(
   createCharacterRoute,
   upload.single("image"),
   handleImage,
-  imageBackupUpload
+  imageBackupUpload,
+  createCharacter
 );
 
 export default characersRouter;
