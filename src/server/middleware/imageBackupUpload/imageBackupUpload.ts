@@ -2,10 +2,10 @@ import { createClient } from "@supabase/supabase-js";
 import type { NextFunction, Response } from "express";
 import path from "path";
 import fs from "fs/promises";
-import environment from "../../../loadEnvironment";
-import type { CustomRequest } from "../auth/types";
-import type { CharacterStructure } from "../../controllers/charactersControllers/types";
-import CustomError from "../../../CustomError/CustomError";
+import environment from "../../../loadEnvironment.js";
+import type { CustomRequest } from "../auth/types.js";
+import type { CharacterStructure } from "../../controllers/charactersControllers/types.js";
+import CustomError from "../../../CustomError/CustomError.js";
 
 const { supabaseUrl, supabaseKey, supabaseBucket } = environment;
 
@@ -22,8 +22,8 @@ const imageBackupUpload = async (
   res: Response,
   next: NextFunction
 ) => {
-  const imagePath = path.join("assets", "images", req.file.originalname);
   try {
+    const imagePath = path.join("assets", "images", req.file.originalname);
     await fs.rename(
       path.join("assets", "images", req.file.filename),
       imagePath
