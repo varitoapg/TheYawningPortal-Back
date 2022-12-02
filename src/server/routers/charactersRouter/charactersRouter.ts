@@ -1,6 +1,8 @@
 import express from "express";
+import { validate } from "express-validation";
 import multer from "multer";
 import path from "path";
+import characterSchema from "../../../schemas/characterSchema.js";
 import {
   createCharacter,
   deleteCharacter,
@@ -38,6 +40,7 @@ characersRouter.post(
   upload.single("image"),
   handleImage,
   imageBackupUpload,
+  validate(characterSchema, {}, { abortEarly: false }),
   createCharacter
 );
 
