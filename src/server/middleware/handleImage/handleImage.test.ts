@@ -2,8 +2,11 @@ import type { NextFunction } from "express";
 import fs from "fs/promises";
 import CustomError from "../../../CustomError/CustomError";
 import { getRandomCharacter } from "../../../factories/characterFactory";
+import charactersRoutes from "../../routers/routes/characterRoutes";
 import type { CustomRequest } from "../auth/types";
 import handleImage from "./handleImage";
+
+const { imagesRoute } = charactersRoutes;
 
 const newCharacter = getRandomCharacter();
 
@@ -21,7 +24,7 @@ const file: Partial<Express.Multer.File> = {
 let mockedFile = jest.fn();
 
 beforeAll(async () => {
-  await fs.writeFile("assets/images/testCharacter", "testCharacter");
+  await fs.writeFile(`${imagesRoute}testCharacter`, "testCharacter");
 });
 
 beforeEach(() => {

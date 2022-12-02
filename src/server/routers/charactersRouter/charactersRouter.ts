@@ -10,13 +10,17 @@ import imageBackupUpload from "../../middleware/imageBackupUpload/imageBackupUpl
 import ownedCharacters from "../../middleware/ownedCharacters/ownedCharacters.js";
 import charactersRoutes from "../routes/characterRoutes.js";
 
-const { deleteCharacterRoute, characterIdRoute, createCharacterRoute } =
-  charactersRoutes;
+const {
+  deleteCharacterRoute,
+  characterIdRoute,
+  createCharacterRoute,
+  imagesRoute,
+} = charactersRoutes;
 
 // eslint-disable-next-line new-cap
 const characersRouter = express.Router();
 const upload = multer({
-  dest: path.join("assets/images"),
+  dest: path.join(`${imagesRoute}`),
   limits: {
     fileSize: 5000000,
   },

@@ -3,6 +3,9 @@ import path from "path";
 import sharp from "sharp";
 import type { CustomRequest } from "../auth/types.js";
 import CustomError from "../../../CustomError/CustomError.js";
+import charactersRoutes from "../../routers/routes/characterRoutes.js";
+
+const { imagesRoute } = charactersRoutes;
 
 const handleImage = async (
   req: CustomRequest,
@@ -17,11 +20,11 @@ const handleImage = async (
       path.extname(originalname)
     )}`;
 
-    await sharp(path.join("assets/images", filename))
+    await sharp(path.join(imagesRoute, filename))
       .resize(200, 200, { fit: "cover", position: "top" })
       .webp({ quality: 92 })
       .toFormat("webp")
-      .toFile(path.join("assets/images", `${imagePath}.webp`));
+      .toFile(path.join(imagesRoute, `${imagePath}.webp`));
 
     req.file.filename = `${imagePath}.webp`;
 
