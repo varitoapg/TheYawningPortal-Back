@@ -6,6 +6,7 @@ const characterSchema = {
     race: Joi.string().required(),
     class: Joi.string().required(),
     imageBackup: Joi.string().required(),
+    image: Joi.string(),
     stats: {
       speed: Joi.number().required(),
       strength: Joi.number().required(),
@@ -15,7 +16,7 @@ const characterSchema = {
       wisdom: Joi.number().required(),
       charisma: Joi.number().required(),
     },
-    brackground: Joi.string().required(),
+    background: Joi.string().required(),
     details: Joi.string().required(),
   }),
 };

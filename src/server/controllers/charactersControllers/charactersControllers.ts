@@ -103,7 +103,7 @@ export const createCharacter = async (
     user.characters.push(newCharacterCreated.id);
     await User.findByIdAndUpdate(userId, user);
 
-    res.status(200).json({ text: "Character created!" });
+    res.status(201).json({ text: "Character created!" });
   } catch (error: unknown) {
     const fatalError = new CustomError(
       (error as Error).message,

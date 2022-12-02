@@ -9,7 +9,11 @@ import {
 } from "../../../factories/characterFactory";
 import { getRandomUserWithId } from "../../../factories/usersFactory";
 import type { CustomRequest } from "../../middleware/auth/types";
-import { deleteCharacter, getAllCharacters } from "./charactersControllers";
+import {
+  createCharacter,
+  deleteCharacter,
+  getAllCharacters,
+} from "./charactersControllers";
 
 const listOfCharacters = getRandomCharacterList(4);
 
@@ -130,6 +134,50 @@ describe("Given the charactersController controller", () => {
         User.findById = jest.fn().mockRejectedValueOnce(fatalError);
 
         await deleteCharacter(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(fatalError);
+      });
+    });
+  });
+
+  describe("And it invokes createCharacter controller", () => {
+    describe("When it receives an object with character information in the body of the request", () => {
+      test("Then should call response's method status with a 201 and json with text 'Character created!'", async () => {
+        const expectedStatus = 201;
+        const user = getRandomUserWithId();
+        const newCharacter = getRandomCharacter();
+        req.body = newCharacter;
+        User.findById = jest.fn().mockResolvedValue(user);
+        User.findByIdAndUpdate = jest.fn().mockResolvedValue([]);
+
+        Character.create = jest.fn().mockReturnValue(newCharacter);
+
+        await createCharacter(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(res.status).toHaveBeenCalledWith(expectedStatus);
+        expect(res.json).toHaveBeenCalledWith({ text: "Character created!" });
+      });
+    });
+
+    describe("When it receives an object with character information in the body of the request and rejects an error", () => {
+      test("Then should call next with a custom error", async () => {
+        const fatalError = new CustomError(
+          "",
+          "Sorry, your character cannot be created!",
+          500
+        );
+
+        User.findById = jest.fn().mockRejectedValueOnce(fatalError);
+
+        await createCharacter(
           req as CustomRequest,
           res as Response,
           next as NextFunction
