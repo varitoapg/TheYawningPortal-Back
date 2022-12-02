@@ -24,7 +24,7 @@ const file: Partial<Express.Multer.File> = {
 let mockedFile = jest.fn();
 
 beforeAll(async () => {
-  await fs.writeFile(`${imagesRoute}testCharacter`, "testCharacter");
+  await fs.writeFile(`${imagesRoute}/testCharacter`, "testCharacter");
 });
 
 beforeEach(() => {

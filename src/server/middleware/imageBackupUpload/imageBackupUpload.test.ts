@@ -28,9 +28,9 @@ jest.mock("@supabase/supabase-js", () => ({
 }));
 
 beforeEach(async () => {
-  await fs.writeFile(`${imagesRoute}testFileImage.webp`, "testFileImage");
+  await fs.writeFile(`${imagesRoute}/testFileImage.webp`, "testFileImage");
   await fs.writeFile(
-    `${imagesRoute}testOriginalImage.web`,
+    `${imagesRoute}/testOriginalImage.webp`,
     "testOriginalImage"
   );
 });
