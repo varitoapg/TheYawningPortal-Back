@@ -5,17 +5,22 @@ import {
   deleteCharacter,
   getAllCharacters,
 } from "../../controllers/charactersControllers/charactersControllers.js";
+import handleImage from "../../middleware/handleImage/handleImage.js";
 import imageBackupUpload from "../../middleware/imageBackupUpload/imageBackupUpload.js";
 import ownedCharacters from "../../middleware/ownedCharacters/ownedCharacters.js";
 import charactersRoutes from "../routes/characterRoutes.js";
 
-const { deleteCharacterRoute, characterIdRoute, createCharacterRoute } =
-  charactersRoutes;
+const {
+  deleteCharacterRoute,
+  characterIdRoute,
+  createCharacterRoute,
+  imagesRoute,
+} = charactersRoutes;
 
 // eslint-disable-next-line new-cap
 const characersRouter = express.Router();
 const upload = multer({
-  dest: path.join("assets", "images"),
+  dest: path.join(`${imagesRoute}`),
   limits: {
     fileSize: 5000000,
   },
@@ -30,6 +35,7 @@ characersRouter.delete(
 characersRouter.post(
   createCharacterRoute,
   upload.single("image"),
+  handleImage,
   imageBackupUpload
 );
 

@@ -3,8 +3,11 @@ import type { NextFunction, Response } from "express";
 import fs from "fs/promises";
 import CustomError from "../../../CustomError/CustomError";
 import { getRandomCharacter } from "../../../factories/characterFactory";
+import charactersRoutes from "../../routers/routes/characterRoutes";
 import type { CustomRequest } from "../auth/types";
 import imageBackupUpload, { bucket } from "./imageBackupUpload";
+
+const { imagesRoute } = charactersRoutes;
 
 const newCharacter = getRandomCharacter();
 delete newCharacter.imageBackup;
@@ -25,9 +28,9 @@ jest.mock("@supabase/supabase-js", () => ({
 }));
 
 beforeEach(async () => {
-  await fs.writeFile("assets/images/testFileImage.webp", "testFileImage");
+  await fs.writeFile(`${imagesRoute}/testFileImage.webp`, "testFileImage");
   await fs.writeFile(
-    "assets/images/testOriginalImage.webp",
+    `${imagesRoute}/testOriginalImage.webp`,
     "testOriginalImage"
   );
 });

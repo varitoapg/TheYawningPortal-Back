@@ -6,8 +6,10 @@ import environment from "../../../loadEnvironment.js";
 import type { CustomRequest } from "../auth/types.js";
 import type { CharacterStructure } from "../../controllers/charactersControllers/types.js";
 import CustomError from "../../../CustomError/CustomError.js";
+import charactersRoutes from "../../routers/routes/characterRoutes.js";
 
 const { supabaseUrl, supabaseKey, supabaseBucket } = environment;
+const { imagesRoute } = charactersRoutes;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -23,16 +25,13 @@ const imageBackupUpload = async (
   next: NextFunction
 ) => {
   try {
-    const imagePath = path.join("assets", "images", req.file.originalname);
-    await fs.rename(
-      path.join("assets", "images", req.file.filename),
-      imagePath
-    );
+    const imagePath = path.join(imagesRoute, req.file.originalname);
+    await fs.rename(path.join(imagesRoute, req.file.filename), imagePath);
 
     const filenameImage = await fs.readFile(imagePath);
 
     await bucket.upload(
-      req.file.filename + req.file.originalname,
+      req.file.originalname + req.file.filename,
       filenameImage
     );
 

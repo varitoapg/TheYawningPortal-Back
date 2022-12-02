@@ -3,6 +3,7 @@ const charactersRoutes = {
   deleteCharacterRoute: "/delete",
   characterIdRoute: "/:idCharacter",
   createCharacterRoute: "/create",
+  imagesRoute: "assets/images",
 };
 
 export default charactersRoutes;
