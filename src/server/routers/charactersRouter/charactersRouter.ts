@@ -1,7 +1,10 @@
 import express from "express";
+import { validate } from "express-validation";
 import multer from "multer";
 import path from "path";
+import characterSchema from "../../../schemas/characterSchema.js";
 import {
+  createCharacter,
   deleteCharacter,
   getAllCharacters,
 } from "../../controllers/charactersControllers/charactersControllers.js";
@@ -36,7 +39,9 @@ characersRouter.post(
   createCharacterRoute,
   upload.single("image"),
   handleImage,
-  imageBackupUpload
+  imageBackupUpload,
+  validate(characterSchema, {}, { abortEarly: false }),
+  createCharacter
 );
 
 export default characersRouter;
