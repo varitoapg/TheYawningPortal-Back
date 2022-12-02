@@ -23,16 +23,13 @@ const imageBackupUpload = async (
   next: NextFunction
 ) => {
   try {
-    const imagePath = path.join("assets", "images", req.file.originalname);
-    await fs.rename(
-      path.join("assets", "images", req.file.filename),
-      imagePath
-    );
+    const imagePath = path.join("assets/images", req.file.originalname);
+    await fs.rename(path.join("assets/images", req.file.filename), imagePath);
 
     const filenameImage = await fs.readFile(imagePath);
 
     await bucket.upload(
-      req.file.filename + req.file.originalname,
+      req.file.originalname + req.file.filename,
       filenameImage
     );
 
