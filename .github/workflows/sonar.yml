@@ -22,6 +22,10 @@ jobs:
           MONGODB_URL: ${{ secrets.MONGODB_URL }}
           SECRET_JWT: ${{ secrets.SECRET_JWT }}
           MONGODB_DEBUG: ${{ secrets.MONGODB_DEBUG }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
+          SUPABASE_BUCKET: ${{ secrets.SUPABASE_BUCKET }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
