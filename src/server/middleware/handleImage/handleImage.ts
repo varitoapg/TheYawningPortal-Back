@@ -12,6 +12,17 @@ const handleImage = async (
   res: Response,
   next: NextFunction
 ) => {
+  if (!req.file) {
+    const notFoundError = new CustomError(
+      "Empty image",
+      "Sorry, you need to add a correct image",
+      404
+    );
+
+    next(notFoundError);
+    return;
+  }
+
   const { filename, originalname } = req.file;
 
   try {

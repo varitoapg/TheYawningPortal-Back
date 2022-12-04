@@ -69,4 +69,16 @@ describe("Given the handleImage middleware", () => {
       expect(next).toBeCalledWith(newError);
     });
   });
+
+  describe("When it receives a request without an image", () => {
+    test("Then next should be called with a CustomError", async () => {
+      const req: Partial<CustomRequest> = {
+        body: newCharacter,
+      };
+
+      await handleImage(req as CustomRequest, null, next);
+
+      expect(next).toBeCalled();
+    });
+  });
 });
