@@ -7,6 +7,7 @@ import {
   createCharacter,
   deleteCharacter,
   getAllCharacters,
+  getCharacterById,
 } from "../../controllers/charactersControllers/charactersControllers.js";
 import handleImage from "../../middleware/handleImage/handleImage.js";
 import imageBackupUpload from "../../middleware/imageBackupUpload/imageBackupUpload.js";
@@ -30,6 +31,7 @@ const upload = multer({
 });
 
 characersRouter.get("", ownedCharacters, getAllCharacters);
+characersRouter.get(characterIdRoute, getCharacterById);
 characersRouter.delete(
   `${deleteCharacterRoute}${characterIdRoute}`,
   deleteCharacter

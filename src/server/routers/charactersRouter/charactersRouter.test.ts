@@ -59,6 +59,7 @@ beforeAll(async () => {
   await User.create(userWithoutCharacters);
 
   await Character.create(charactersList[0]);
+  await Character.create(charactersList[1]);
 });
 
 afterAll(async () => {
@@ -119,6 +120,34 @@ describe("Given the endpoint [DELETE]/characters/delete/:idCharacter", () => {
         )
         .set("Authorization", `Bearer ${tokenWithoutCharacters}`)
         .expect(404);
+    });
+  });
+});
+
+describe("Given the endpoint [GET]/characters/:idCharacter", () => {
+  describe("When it receives a request with a correct token and idCharacter", () => {
+    test("Then it should return a status 200 and a character", async () => {
+      const expectedStatus = 200;
+
+      const response = await request(app)
+        .get(`${charactersRoute}/${charactersList[1]._id.toString()}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(expectedStatus);
+
+      expect(response.body).toHaveProperty("name", charactersList[1].name);
+    });
+  });
+
+  describe("When it receives a request with a correct token and wrong idCharacter", () => {
+    test("Then it should return a status 404 and an error text 'Character not found'", async () => {
+      const expectedStatus = 404;
+
+      const response = await request(app)
+        .get(`${charactersRoute}/${charactersList[2]._id.toString()}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(expectedStatus);
+
+      expect(response.body).toHaveProperty("error", "Character not found");
     });
   });
 });
