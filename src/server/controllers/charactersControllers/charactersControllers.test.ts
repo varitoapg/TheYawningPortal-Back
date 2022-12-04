@@ -233,7 +233,7 @@ describe("Given the charactersController controller", () => {
       test("Then it should call next with a custom error", async () => {
         req.params = { idCharacter: "" };
 
-        Character.findById = jest.fn().mockResolvedValueOnce(new Error(""));
+        Character.findById = jest.fn().mockRejectedValueOnce(new Error(""));
         const customError = new CustomError("", "Character not found", 400);
 
         await getCharacterById(
