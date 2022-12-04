@@ -126,3 +126,34 @@ export const createCharacter = async (
     next(fatalError);
   }
 };
+
+export const getCharacterById = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { idCharacter } = req.params;
+  try {
+    const character = await Character.findById(idCharacter);
+
+    if (!character) {
+      const notFoundError = new CustomError(
+        "Character not found",
+        "Character not found",
+        404
+      );
+      next(notFoundError);
+
+      return;
+    }
+
+    res.status(200).json(character);
+  } catch (error: unknown) {
+    const customError = new CustomError(
+      (error as Error).message,
+      "Character not found",
+      400
+    );
+    next(customError);
+  }
+};

@@ -13,6 +13,7 @@ import {
   createCharacter,
   deleteCharacter,
   getAllCharacters,
+  getCharacterById,
 } from "./charactersControllers";
 
 const listOfCharacters = getRandomCharacterList(4);
@@ -184,6 +185,64 @@ describe("Given the charactersController controller", () => {
         );
 
         expect(next).toHaveBeenCalledWith(fatalError);
+      });
+    });
+  });
+
+  describe("And it invokes getCharacterById controller", () => {
+    describe("When it's called with a correct idCharacter", () => {
+      test("Then it should call response's method status with 200 and json with character", async () => {
+        req.params = { idCharacter: idToFind.toString() };
+
+        Character.findById = jest
+          .fn()
+          .mockResolvedValueOnce(listOfCharacters[0]);
+
+        await getCharacterById(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith(listOfCharacters[0]);
+      });
+    });
+
+    describe("When it's called with a wrong idCharacter", () => {
+      test("Then it should call next with a custom error", async () => {
+        const notFoundError = new CustomError(
+          "Character not found",
+          "Character not found",
+          404
+        );
+
+        Character.findById = jest.fn().mockResolvedValueOnce(undefined);
+
+        await getCharacterById(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(notFoundError);
+      });
+    });
+
+    describe("When it's called without a  idCharacter", () => {
+      test("Then it should call next with a custom error", async () => {
+        req.params = { idCharacter: "" };
+
+        Character.findById = jest.fn().mockRejectedValueOnce(new Error(""));
+        const customError = new CustomError("", "Character not found", 400);
+
+        await getCharacterById(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(customError);
       });
     });
   });
