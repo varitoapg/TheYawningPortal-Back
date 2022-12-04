@@ -9,7 +9,7 @@ export const characterSchema = new Schema({
     type: String,
     required: true,
   },
-  class: {
+  characterClass: {
     type: String,
     required: true,
   },
@@ -21,35 +21,26 @@ export const characterSchema = new Schema({
     type: String,
     required: true,
   },
-  stats: {
-    speed: {
-      type: Number,
-      required: true,
-    },
-    strength: {
-      type: Number,
-      required: true,
-    },
-    dexterity: {
-      type: Number,
-      required: true,
-    },
-    constitution: {
-      type: Number,
-      required: true,
-    },
-    intelligence: {
-      type: Number,
-      required: true,
-    },
-    wisdom: {
-      type: Number,
-      required: true,
-    },
-    charisma: {
-      type: Number,
-      required: true,
-    },
+  speed: {
+    type: Number,
+  },
+  strength: {
+    type: Number,
+  },
+  dexterity: {
+    type: Number,
+  },
+  constitution: {
+    type: Number,
+  },
+  intelligence: {
+    type: Number,
+  },
+  wisdom: {
+    type: Number,
+  },
+  charisma: {
+    type: Number,
   },
   background: {
     type: String,
