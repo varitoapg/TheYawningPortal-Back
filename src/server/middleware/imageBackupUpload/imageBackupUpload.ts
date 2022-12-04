@@ -25,7 +25,10 @@ const imageBackupUpload = async (
   next: NextFunction
 ) => {
   try {
-    const imagePath = path.join(imagesRoute, req.file.originalname);
+    const imagePath = path.join(
+      imagesRoute,
+      `${req.file.filename}${req.file.originalname}`
+    );
     await fs.rename(path.join(imagesRoute, req.file.filename), imagePath);
 
     const filenameImage = await fs.readFile(imagePath);
@@ -37,7 +40,7 @@ const imageBackupUpload = async (
 
     const {
       data: { publicUrl },
-    } = bucket.getPublicUrl(req.file.originalname);
+    } = bucket.getPublicUrl(req.file.originalname + req.file.filename);
 
     req.body.image = imagePath;
     req.body.imageBackup = publicUrl;

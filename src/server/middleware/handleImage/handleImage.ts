@@ -13,6 +13,10 @@ const handleImage = async (
   next: NextFunction
 ) => {
   const { filename, originalname } = req.file;
+  if (!req.file) {
+    next();
+    return;
+  }
 
   try {
     const imagePath = `${path.basename(
