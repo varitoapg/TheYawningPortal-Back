@@ -12,12 +12,41 @@ export const getAllCharacters = async (
   next: NextFunction
 ) => {
   const { characters } = req;
+
+  const pageOptions = {
+    page: +req.query.page || 0,
+    limit: 5,
+  };
+
   try {
-    const allCharacters = await Character.find({
+    const countCharacter = await Character.countDocuments({
       _id: { $in: characters },
     });
 
-    res.status(200).json({ allCharacters });
+    const checkPage = {
+      count: countCharacter,
+      isPreviousPage: pageOptions.page !== 0,
+      isNextPage: countCharacter >= pageOptions.limit * (pageOptions.page + 1),
+      totalPages: Math.ceil(countCharacter / pageOptions.limit),
+    };
+
+    const allCharacters = await Character.find({
+      _id: { $in: characters },
+    })
+      .skip(pageOptions.page * pageOptions.limit)
+      .limit(pageOptions.limit);
+
+    if (allCharacters.length === 0) {
+      const noMoreCharacters = new CustomError(
+        "All characters are loaded",
+        "You cannot get more characters",
+        404
+      );
+      next(noMoreCharacters);
+      return;
+    }
+
+    res.status(200).json({ ...checkPage, allCharacters });
   } catch (error: unknown) {
     next(error);
   }
