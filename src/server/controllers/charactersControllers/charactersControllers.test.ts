@@ -25,6 +25,7 @@ user.characters = [...user.characters, idToFind];
 let req: Partial<CustomRequest> = {
   characters: [],
   params: {},
+  query: { page: "0" },
 };
 
 const res: Partial<Response> = {
@@ -39,12 +40,25 @@ describe("Given the charactersController controller", () => {
     describe("When it receives a request with a list of ObjectsId", () => {
       test("Then it should return an object with the characters with the ID of the array", async () => {
         req = {
+          ...req,
           characters: [listOfCharacters[0]._id, listOfCharacters[1]._id],
         };
 
-        Character.find = jest
-          .fn()
-          .mockReturnValueOnce([listOfCharacters[0], listOfCharacters[1]]);
+        const expectedPage = {
+          count: 2,
+          isNextPage: false,
+          isPreviousPage: false,
+          totalPages: 1,
+        };
+
+        Character.countDocuments = jest.fn().mockResolvedValueOnce(2);
+        Character.find = jest.fn().mockReturnValueOnce({
+          skip: jest.fn().mockReturnValue({
+            limit: jest
+              .fn()
+              .mockReturnValue([listOfCharacters[0], listOfCharacters[1]]),
+          }),
+        });
 
         await getAllCharacters(
           req as CustomRequest,
@@ -54,8 +68,38 @@ describe("Given the charactersController controller", () => {
 
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
+          ...expectedPage,
           allCharacters: [listOfCharacters[0], listOfCharacters[1]],
         });
+      });
+    });
+
+    describe("When it receives a request and there is no characters", () => {
+      test("Then next should be called with a CustomError", async () => {
+        const noMoreCharacters = new CustomError(
+          "All characters are loaded",
+          "You cannot get more characters",
+          404
+        );
+        req = {
+          ...req,
+          characters: [],
+        };
+
+        Character.countDocuments = jest.fn().mockResolvedValueOnce(1);
+        Character.find = jest.fn().mockReturnValueOnce({
+          skip: jest.fn().mockReturnValue({
+            limit: jest.fn().mockResolvedValueOnce([]),
+          }),
+        });
+
+        await getAllCharacters(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(noMoreCharacters);
       });
     });
 
@@ -65,10 +109,16 @@ describe("Given the charactersController controller", () => {
 
         const character = getRandomCharacter();
         req = {
+          ...req,
           characters: [character._id],
         };
 
-        Character.find = jest.fn().mockRejectedValueOnce(error);
+        Character.countDocuments = jest.fn().mockResolvedValueOnce(1);
+        Character.find = jest.fn().mockReturnValueOnce({
+          skip: jest.fn().mockReturnValue({
+            limit: jest.fn().mockRejectedValueOnce(error),
+          }),
+        });
 
         await getAllCharacters(
           req as CustomRequest,
