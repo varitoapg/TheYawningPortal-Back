@@ -186,7 +186,7 @@ export const getCharacterById = async (
   } catch (error: unknown) {
     const customError = new CustomError(
       (error as Error).message,
-      "Character not found",
+      "Sorry, character not found",
       400
     );
     next(customError);

@@ -163,7 +163,10 @@ describe("Given the endpoint [GET]/characters/:idCharacter", () => {
         .set("Authorization", `Bearer ${token}`)
         .expect(expectedStatus);
 
-      expect(response.body).toHaveProperty("error", "Character not found");
+      expect(response.body).toHaveProperty(
+        "error",
+        "Sorry, character not found"
+      );
     });
   });
 });
