@@ -2,10 +2,7 @@ import express from "express";
 import { validate } from "express-validation";
 import multer from "multer";
 import path from "path";
-import {
-  characterSchema,
-  characterUpdateSchema,
-} from "../../../schemas/characterSchema.js";
+import { characterSchema } from "../../../schemas/characterSchema.js";
 import {
   createCharacter,
   deleteCharacter,
@@ -56,7 +53,7 @@ characersRouter.patch(
   upload.single("image"),
   handleImage,
   imageBackupUpload,
-  validate(characterUpdateSchema, {}, { abortEarly: false }),
+  validate(characterSchema, {}, { abortEarly: false }),
   editCharacter
 );
 export default characersRouter;
