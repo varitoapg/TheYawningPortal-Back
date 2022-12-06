@@ -178,7 +178,6 @@ export const getCharacterById = async (
   res: Response,
   next: NextFunction
 ) => {
-  debugger;
   const { idCharacter } = req.params;
   try {
     const character = await Character.findById(idCharacter);
