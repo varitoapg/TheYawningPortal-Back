@@ -178,20 +178,10 @@ export const getCharacterById = async (
   res: Response,
   next: NextFunction
 ) => {
+  debugger;
   const { idCharacter } = req.params;
   try {
     const character = await Character.findById(idCharacter);
-
-    if (!character) {
-      const notFoundError = new CustomError(
-        "Character not found",
-        "Character not found",
-        404
-      );
-      next(notFoundError);
-
-      return;
-    }
 
     res.status(200).json(character);
   } catch (error: unknown) {
@@ -230,7 +220,7 @@ export const editCharacter = async (
   } catch (error: unknown) {
     const customError = new CustomError(
       (error as Error).message,
-      "Error updating session",
+      "Error updating character",
       500
     );
     next(customError);
