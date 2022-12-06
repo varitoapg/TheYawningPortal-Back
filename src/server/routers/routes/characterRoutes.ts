@@ -4,6 +4,7 @@ const charactersRoutes = {
   characterIdRoute: "/:idCharacter",
   createCharacterRoute: "/create",
   imagesRoute: "assets/images",
+  editCharacterRoute: "/edit",
 };
 
 export default charactersRoutes;

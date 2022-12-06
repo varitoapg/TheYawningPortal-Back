@@ -12,6 +12,7 @@ import type { CustomRequest } from "../../middleware/auth/types";
 import {
   createCharacter,
   deleteCharacter,
+  editCharacter,
   getAllCharacters,
   getCharacterById,
 } from "./charactersControllers";
@@ -287,6 +288,46 @@ describe("Given the charactersController controller", () => {
         const customError = new CustomError("", "Character not found", 400);
 
         await getCharacterById(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(customError);
+      });
+    });
+  });
+
+  describe("And it invokes editCharacter controller", () => {
+    describe("When its called with a correct idCharacter and new character information", () => {
+      test("Then it should call response's method status with 201", async () => {
+        req.params = { idCharacter: idToFind.toString() };
+        const newCharacter = getRandomCharacter();
+        const expectedStatus = 201;
+
+        Character.findByIdAndUpdate = jest
+          .fn()
+          .mockReturnValueOnce(newCharacter);
+
+        await editCharacter(
+          req as CustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(res.status).toHaveBeenCalledWith(expectedStatus);
+      });
+    });
+
+    describe("When its called with an incorrect idCharacter", () => {
+      test("Then it should call next with a customError", async () => {
+        const customError = new CustomError("", "Error updating session", 500);
+
+        Character.findByIdAndUpdate = jest
+          .fn()
+          .mockRejectedValueOnce(customError);
+
+        await editCharacter(
           req as CustomRequest,
           res as Response,
           next as NextFunction
