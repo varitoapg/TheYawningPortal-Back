@@ -77,6 +77,22 @@ describe("Given the endpoint [GET]/characters", () => {
           Authorization: `Bearer ${token}`,
           characters: [charactersList[1]._id, charactersList[0]._id],
         })
+        .query({ characterClass: "all" })
+        .expect(200);
+
+      expect(response.body).toHaveProperty("allCharacters");
+    });
+  });
+
+  describe("When it receives a request with a correct token and a list of characters to find, filtered by a characterClass", () => {
+    test("Then it should return a list of characters with the same class", async () => {
+      const response = await request(app)
+        .get(`${charactersRoute}`)
+        .set({
+          Authorization: `Bearer ${token}`,
+          characters: [charactersList[1]._id, charactersList[0]._id],
+        })
+        .query({ characterClass: charactersList[1].characterClass })
         .expect(200);
 
       expect(response.body).toHaveProperty("allCharacters");
