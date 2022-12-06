@@ -2,10 +2,14 @@ import express from "express";
 import { validate } from "express-validation";
 import multer from "multer";
 import path from "path";
-import characterSchema from "../../../schemas/characterSchema.js";
+import {
+  characterSchema,
+  characterUpdateSchema,
+} from "../../../schemas/characterSchema.js";
 import {
   createCharacter,
   deleteCharacter,
+  editCharacter,
   getAllCharacters,
   getCharacterById,
 } from "../../controllers/charactersControllers/charactersControllers.js";
@@ -19,6 +23,7 @@ const {
   characterIdRoute,
   createCharacterRoute,
   imagesRoute,
+  editCharacterRoute,
 } = charactersRoutes;
 
 // eslint-disable-next-line new-cap
@@ -46,4 +51,12 @@ characersRouter.post(
   createCharacter
 );
 
+characersRouter.patch(
+  `${editCharacterRoute}${characterIdRoute}`,
+  upload.single("image"),
+  handleImage,
+  imageBackupUpload,
+  validate(characterUpdateSchema, {}, { abortEarly: false }),
+  editCharacter
+);
 export default characersRouter;

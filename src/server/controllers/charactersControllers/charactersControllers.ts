@@ -203,3 +203,36 @@ export const getCharacterById = async (
     next(customError);
   }
 };
+
+export const editCharacter = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { idCharacter } = req.params;
+
+  const updateCharacter = req.body as CharacterStructure;
+
+  try {
+    const updatedCharacter = await Character.findByIdAndUpdate(
+      idCharacter,
+      { ...updateCharacter },
+      {
+        returnDocument: "after",
+      }
+    );
+
+    res.status(201).json({
+      character: {
+        ...updatedCharacter,
+      },
+    });
+  } catch (error: unknown) {
+    const customError = new CustomError(
+      (error as Error).message,
+      "Error updating session",
+      500
+    );
+    next(customError);
+  }
+};

@@ -1,6 +1,6 @@
 import { Joi } from "express-validation";
 
-const characterSchema = {
+export const characterSchema = {
   body: Joi.object({
     name: Joi.string().required(),
     race: Joi.string().required(),
@@ -19,4 +19,21 @@ const characterSchema = {
   }),
 };
 
-export default characterSchema;
+export const characterUpdateSchema = {
+  body: Joi.object({
+    name: Joi.string().required(),
+    race: Joi.string(),
+    characterClass: Joi.string(),
+    imageBackup: Joi.string().required(),
+    image: Joi.string(),
+    speed: Joi.number(),
+    strength: Joi.number(),
+    dexterity: Joi.number(),
+    constitution: Joi.number(),
+    intelligence: Joi.number(),
+    wisdom: Joi.number(),
+    charisma: Joi.number(),
+    background: Joi.string().required(),
+    details: Joi.string().required(),
+  }),
+};
