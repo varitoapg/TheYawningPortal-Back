@@ -156,14 +156,17 @@ describe("Given the endpoint [GET]/characters/:idCharacter", () => {
 
   describe("When it receives a request with a correct token and wrong idCharacter", () => {
     test("Then it should return a status 404 and an error text 'Character not found'", async () => {
-      const expectedStatus = 404;
+      const expectedStatus = 400;
 
       const response = await request(app)
-        .get(`${charactersRoute}/${charactersList[2]._id.toString()}`)
+        .get(`${charactersRoute}/noId`)
         .set("Authorization", `Bearer ${token}`)
         .expect(expectedStatus);
 
-      expect(response.body).toHaveProperty("error", "Character not found");
+      expect(response.body).toHaveProperty(
+        "error",
+        "Sorry, character not found"
+      );
     });
   });
 });

@@ -260,26 +260,6 @@ describe("Given the charactersController controller", () => {
       });
     });
 
-    describe("When it's called with a wrong idCharacter", () => {
-      test("Then it should call next with a custom error", async () => {
-        const notFoundError = new CustomError(
-          "Character not found",
-          "Character not found",
-          404
-        );
-
-        Character.findById = jest.fn().mockResolvedValueOnce(undefined);
-
-        await getCharacterById(
-          req as CustomRequest,
-          res as Response,
-          next as NextFunction
-        );
-
-        expect(next).toHaveBeenCalledWith(notFoundError);
-      });
-    });
-
     describe("When it's called without a  idCharacter", () => {
       test("Then it should call next with a custom error", async () => {
         req.params = { idCharacter: "" };
@@ -321,7 +301,11 @@ describe("Given the charactersController controller", () => {
 
     describe("When its called with an incorrect idCharacter", () => {
       test("Then it should call next with a customError", async () => {
-        const customError = new CustomError("", "Error updating session", 500);
+        const customError = new CustomError(
+          "",
+          "Error updating character",
+          500
+        );
 
         Character.findByIdAndUpdate = jest
           .fn()
