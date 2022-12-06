@@ -13,30 +13,41 @@ export const getAllCharacters = async (
 ) => {
   const { characters } = req;
 
+  let checkPage;
+  let allCharacters;
+  let countCharacter;
+
   const pageOptions = {
     page: +req.query.page || 0,
     limit: 5,
+    characterClass: req.query.characterClass as string,
   };
-
   try {
-    const countCharacter = await Character.countDocuments({
-      _id: { $in: characters },
-    });
+    if (pageOptions.characterClass === "all") {
+      countCharacter = await Character.countDocuments({
+        _id: { $in: characters },
+      });
 
-    const checkPage = {
-      count: countCharacter,
-      isPreviousPage: pageOptions.page !== 0,
-      isNextPage: countCharacter >= pageOptions.limit * (pageOptions.page + 1),
-      totalPages: Math.ceil(countCharacter / pageOptions.limit),
-    };
+      allCharacters = await Character.find({
+        _id: { $in: characters },
+      })
+        .skip(pageOptions.page * pageOptions.limit)
+        .limit(pageOptions.limit);
+    } else {
+      countCharacter = await Character.countDocuments({
+        _id: { $in: characters },
+        characterClass: pageOptions.characterClass,
+      });
 
-    const allCharacters = await Character.find({
-      _id: { $in: characters },
-    })
-      .skip(pageOptions.page * pageOptions.limit)
-      .limit(pageOptions.limit);
+      allCharacters = await Character.find({
+        _id: { $in: characters },
+        characterClass: pageOptions.characterClass,
+      })
+        .skip(pageOptions.page * pageOptions.limit)
+        .limit(pageOptions.limit);
+    }
 
-    if (allCharacters.length === 0) {
+    if (countCharacter === 0) {
       const noMoreCharacters = new CustomError(
         "All characters are loaded",
         "You cannot get more characters",
@@ -46,6 +57,12 @@ export const getAllCharacters = async (
       return;
     }
 
+    checkPage = {
+      count: countCharacter,
+      isPreviousPage: pageOptions.page !== 0,
+      isNextPage: countCharacter >= pageOptions.limit * (pageOptions.page + 1),
+      totalPages: Math.ceil(countCharacter / pageOptions.limit),
+    };
     res.status(200).json({ ...checkPage, allCharacters });
   } catch (error: unknown) {
     next(error);

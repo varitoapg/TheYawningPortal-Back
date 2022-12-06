@@ -25,7 +25,7 @@ user.characters = [...user.characters, idToFind];
 let req: Partial<CustomRequest> = {
   characters: [],
   params: {},
-  query: { page: "0" },
+  query: { page: "0", characterClass: "all" },
 };
 
 const res: Partial<Response> = {
@@ -86,7 +86,7 @@ describe("Given the charactersController controller", () => {
           characters: [],
         };
 
-        Character.countDocuments = jest.fn().mockResolvedValueOnce(1);
+        Character.countDocuments = jest.fn().mockResolvedValueOnce(0);
         Character.find = jest.fn().mockReturnValueOnce({
           skip: jest.fn().mockReturnValue({
             limit: jest.fn().mockResolvedValueOnce([]),
