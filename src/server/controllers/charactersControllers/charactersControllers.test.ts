@@ -49,7 +49,6 @@ describe("Given the charactersController controller", () => {
           count: 2,
           isNextPage: false,
           isPreviousPage: false,
-          totalPages: 1,
         };
 
         Character.countDocuments = jest.fn().mockResolvedValueOnce(2);
@@ -72,35 +71,6 @@ describe("Given the charactersController controller", () => {
           ...expectedPage,
           allCharacters: [listOfCharacters[0], listOfCharacters[1]],
         });
-      });
-    });
-
-    describe("When it receives a request and there is no characters", () => {
-      test("Then next should be called with a CustomError", async () => {
-        const noMoreCharacters = new CustomError(
-          "All characters are loaded",
-          "You cannot get more characters",
-          404
-        );
-        req = {
-          ...req,
-          characters: [],
-        };
-
-        Character.countDocuments = jest.fn().mockResolvedValueOnce(0);
-        Character.find = jest.fn().mockReturnValueOnce({
-          skip: jest.fn().mockReturnValue({
-            limit: jest.fn().mockResolvedValueOnce([]),
-          }),
-        });
-
-        await getAllCharacters(
-          req as CustomRequest,
-          res as Response,
-          next as NextFunction
-        );
-
-        expect(next).toHaveBeenCalledWith(noMoreCharacters);
       });
     });
 

@@ -24,44 +24,31 @@ export const getAllCharacters = async (
   };
   try {
     if (pageOptions.characterClass === "all") {
-      countCharacter = await Character.countDocuments({
-        _id: { $in: characters },
-      });
-
       allCharacters = await Character.find({
         _id: { $in: characters },
       })
         .skip(pageOptions.page * pageOptions.limit)
         .limit(pageOptions.limit);
+      countCharacter = await Character.countDocuments({
+        _id: { $in: characters },
+      });
     } else {
+      allCharacters = await Character.find({
+        _id: { $in: characters },
+        characterClass: { $in: pageOptions.characterClass },
+      })
+        .skip(pageOptions.page * pageOptions.limit)
+        .limit(pageOptions.limit);
       countCharacter = await Character.countDocuments({
         _id: { $in: characters },
         characterClass: pageOptions.characterClass,
       });
-
-      allCharacters = await Character.find({
-        _id: { $in: characters },
-        characterClass: pageOptions.characterClass,
-      })
-        .skip(pageOptions.page * pageOptions.limit)
-        .limit(pageOptions.limit);
-    }
-
-    if (countCharacter === 0) {
-      const noMoreCharacters = new CustomError(
-        "All characters are loaded",
-        "You cannot get more characters",
-        404
-      );
-      next(noMoreCharacters);
-      return;
     }
 
     checkPage = {
       count: countCharacter,
       isPreviousPage: pageOptions.page !== 0,
-      isNextPage: countCharacter >= pageOptions.limit * (pageOptions.page + 1),
-      totalPages: Math.ceil(countCharacter / pageOptions.limit),
+      isNextPage: countCharacter > pageOptions.limit * (pageOptions.page + 1),
     };
     res.status(200).json({ ...checkPage, allCharacters });
   } catch (error: unknown) {
@@ -82,7 +69,6 @@ export const deleteCharacter = async (
     const newOwnedCharacters = user.characters.filter(
       (idToDelete) => idToDelete.toString() !== idCharacter
     );
-
     if (user.characters.length === newOwnedCharacters.length) {
       const notFoundError = new CustomError(
         "Cannot find the character in this user",
@@ -95,9 +81,8 @@ export const deleteCharacter = async (
     }
 
     user.characters = newOwnedCharacters;
-    await User.findByIdAndUpdate(userId, user);
-
     await Character.findByIdAndDelete(idCharacter);
+    await User.findByIdAndUpdate(userId, user);
     res.status(200).json({ text: "Character deleted!" });
   } catch (error: unknown) {
     const fatalError = new CustomError(
