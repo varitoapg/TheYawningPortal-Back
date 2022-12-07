@@ -58,7 +58,40 @@
           "bearer": [
             {
               "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVyQWRtaW4iLCJpZCI6IjYzODM1ODY3ZmRjMmFhNGVjNGI4MjhkOCIsImlhdCI6MTY2OTcwOTQxNywiZXhwIjoxNjY5ODgyMjE3fQ.n8Yye6-o0w36Dw-iU2cvzEj-29qo7KdfvHOgjF2EX_Y",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVyQWRtaW4iLCJpZCI6IjYzODM1ODY3ZmRjMmFhNGVjNGI4MjhkOCIsImlhdCI6MTY3MDQ0MDQzOSwiZXhwIjoxNjcwNjEzMjM5fQ._Fw3jG1idwFXWFIlrttP3L5wjBUKeoVatbjNz5o9I_Y",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{theYawningPortal}}/characters?page&characterClass",
+          "host": ["{{theYawningPortal}}"],
+          "path": ["characters"],
+          "query": [
+            {
+              "key": "page",
+              "value": null
+            },
+            {
+              "key": "characterClass",
+              "value": null
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[GET]/characters/:idCharacter",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVyQWRtaW4iLCJpZCI6IjYzODM1ODY3ZmRjMmFhNGVjNGI4MjhkOCIsImlhdCI6MTY3MDA3MTAxMSwiZXhwIjoxNjcwMjQzODExfQ.OJSs1rPxifEcvq_UWCGFhBUxeiuL6G7AXfTzLT9-U9E",
               "type": "string"
             }
           ]
@@ -69,6 +102,258 @@
           "raw": "{{theYawningPortal}}/characters",
           "host": ["{{theYawningPortal}}"],
           "path": ["characters"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[GET]/",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVyQWRtaW4iLCJpZCI6IjYzODM1ODY3ZmRjMmFhNGVjNGI4MjhkOCIsImlhdCI6MTY3MDA3MTAxMSwiZXhwIjoxNjcwMjQzODExfQ.OJSs1rPxifEcvq_UWCGFhBUxeiuL6G7AXfTzLT9-U9E",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{theYawningPortal}}/",
+          "host": ["{{theYawningPortal}}"],
+          "path": [""]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[DELETE]/characters/:idCharacter",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVyQWRtaW4iLCJpZCI6IjYzODM1ODY3ZmRjMmFhNGVjNGI4MjhkOCIsImlhdCI6MTY3MDQ0MDQzOSwiZXhwIjoxNjcwNjEzMjM5fQ._Fw3jG1idwFXWFIlrttP3L5wjBUKeoVatbjNz5o9I_Y",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{theYawningPortal}}/characters",
+          "host": ["{{theYawningPortal}}"],
+          "path": ["characters"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[POST]/characters/create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVyQWRtaW4iLCJpZCI6IjYzODM1ODY3ZmRjMmFhNGVjNGI4MjhkOCIsImlhdCI6MTY3MDQ0MDQzOSwiZXhwIjoxNjcwNjEzMjM5fQ._Fw3jG1idwFXWFIlrttP3L5wjBUKeoVatbjNz5o9I_Y",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": []
+            },
+            {
+              "key": "name",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "characterClass",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "race",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "speed",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "strength",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "constitution",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "dexterity",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "intelligence",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "wisdom",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "charisma",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "background",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "details",
+              "value": "",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{theYawningPortal}}/characters/create",
+          "host": ["{{theYawningPortal}}"],
+          "path": ["characters", "create"],
+          "query": [
+            {
+              "key": "image",
+              "value": null,
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "[PATCH]characters/edit/:idchar",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVyQWRtaW4iLCJpZCI6IjYzODM1ODY3ZmRjMmFhNGVjNGI4MjhkOCIsImlhdCI6MTY3MDQ0MDQzOSwiZXhwIjoxNjcwNjEzMjM5fQ._Fw3jG1idwFXWFIlrttP3L5wjBUKeoVatbjNz5o9I_Y",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": []
+            },
+            {
+              "key": "name",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "characterClass",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "race",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "speed",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "strength",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "constitution",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "dexterity",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "intelligence",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "wisdom",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "charisma",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "background",
+              "value": "",
+              "type": "text"
+            },
+            {
+              "key": "details",
+              "value": "",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{theYawningPortal}}/characters/edit/:idchar",
+          "host": ["{{theYawningPortal}}"],
+          "path": ["characters", "edit", ":idchar"],
+          "query": [
+            {
+              "key": "image",
+              "value": null,
+              "disabled": true
+            }
+          ],
+          "variable": [
+            {
+              "key": "idchar",
+              "value": null
+            }
+          ]
         }
       },
       "response": []
