@@ -18,7 +18,7 @@ Here it is the end of my trip in ISDI Coders web development bootcamp with my fi
 With The Yawning Portal you can create in an easy way your own characters to play Dungeons and Dragons. It is a copy of a simplified D&D spreadsheet to keep your characters.
 If you are a DM it's useful too to save all your NPC of your games.
 
-This projects works with an API Rest, if you are interested, here you have the link for it: https://github.com/isdi-coders-2022/Alvaro-Parada_Back-Final-Project-202209-BCN
+This projects works with a SPA, if you are interested, here you have the link for it: https://github.com/varitoapg/TheYawningPortal-Front
 
 ## Technologies Used
 
@@ -35,7 +35,10 @@ This projects works with an API Rest, if you are interested, here you have the l
 
 ## Features
 
-- ✅[Sonar Backend](https://sonarcloud.io/project/overview?id=isdi-coders-2022_Alvaro-Parada_Back-Final-Project-202209-BCN)
+- [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=varitoapg_TheYawningPortal-Back&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=varitoapg_TheYawningPortal-Back)
+- [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=varitoapg_TheYawningPortal-Back&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=varitoapg_TheYawningPortal-Back)
+- [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=varitoapg_TheYawningPortal-Back&metric=coverage)](https://sonarcloud.io/summary/new_code?id=varitoapg_TheYawningPortal-Back)
+- [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=varitoapg_TheYawningPortal-Back&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=varitoapg_TheYawningPortal-Back)
 
 ## Setup
 
@@ -43,8 +46,8 @@ If you are interested in this project, all you need to do is clone this reposito
 in _package.json_. Use the code below to do it.
 
 ```
-git clone https://github.com/isdi-coders-2022/Alvaro-Parada_Back-Final-Project-202209-BCN
-cd Alvaro-Parada_Front-Final-Project-202209-BCN
+git clone https://github.com/varitoapg/TheYawningPortal-Back
+cd TheYawningPortal-Back
 npm install
 
 ```
