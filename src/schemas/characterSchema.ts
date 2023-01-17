@@ -14,36 +14,28 @@ export const characterSchema = {
     }),
     imageBackup: Joi.string().required(),
     image: Joi.string(),
-    speed: Joi.number().required().messages({
-      "number.empty": `Speed cannot be empty.`,
-    }),
-    strength: Joi.number().required().min(1).max(20).messages({
-      "number.empty": `Strength cannot be empty.`,
+    speed: Joi.number(),
+    strength: Joi.number().min(1).max(20).messages({
       "number.min": `Strength should have a minimum value of {#limit}.`,
       "number.max": `Strength should have a maximum value of {#limit}.`,
     }),
-    dexterity: Joi.number().required().min(1).max(20).messages({
-      "number.empty": `Dexterity cannot be empty.`,
+    dexterity: Joi.number().min(1).max(20).messages({
       "number.min": `Dexterity should have a minimum value of {#limit}.`,
       "number.max": `Dexterity should have a maximum value of {#limit}.`,
     }),
-    constitution: Joi.number().required().min(1).max(20).messages({
-      "number.empty": `Constitution cannot be empty.`,
+    constitution: Joi.number().min(1).max(20).messages({
       "number.min": `Constitution should have a minimum value of {#limit}.`,
       "number.max": `Constitution should have a maximum value of {#limit}.`,
     }),
-    intelligence: Joi.number().required().min(1).max(20).messages({
-      "number.empty": `Intelligence cannot be empty.`,
+    intelligence: Joi.number().min(1).max(20).messages({
       "number.min": `Intelligence should have a minimum value of {#limit}.`,
       "number.max": `Intelligence should have a maximum value of {#limit}.`,
     }),
-    wisdom: Joi.number().required().min(1).max(20).messages({
-      "number.empty": `Wisdom cannot be empty.`,
+    wisdom: Joi.number().min(1).max(20).messages({
       "number.min": `Wisdom should have a minimum value of {#limit}.`,
       "number.max": `Wisdom should have a maximum value of {#limit}.`,
     }),
-    charisma: Joi.number().required().min(1).max(20).messages({
-      "number.empty": `Charisma cannot be empty.`,
+    charisma: Joi.number().min(1).max(20).messages({
       "number.min": `Charisma should have a minimum value of {#limit}.`,
       "number.max": `Charisma should have a maximum value of {#limit}.`,
     }),
