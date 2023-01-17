@@ -44,11 +44,9 @@ export const characterSchema = new Schema({
   },
   background: {
     type: String,
-    required: true,
   },
   details: {
     type: String,
-    required: true,
   },
   isAlive: {
     type: Boolean,
